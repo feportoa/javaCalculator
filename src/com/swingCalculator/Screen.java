@@ -11,8 +11,14 @@ public class Screen extends JFrame
     long scrHeight = 600L;
     long btnWidth = 100L;
     long btnHeight = 75L;
+
+    Font font = new Font("Arial", Font.BOLD, 18);
+    Color foregroundColor = new Color(203, 203, 203);
+    Color backgroundColor = new Color(31, 31, 31);
+
     public Screen()
     {
+        /* ---------- Screen Settings ---------- */
         setTitle("JaCa");
         setVisible(true);
 
@@ -26,37 +32,44 @@ public class Screen extends JFrame
         setLocationRelativeTo(null);
         setLayout(null);
 
-        JButton BTest = new JButton("Test");
-        Font font = new Font("Arial", Font.BOLD, 18);
-        Color foregroundColor = new Color(203, 203, 203);
-        Color backgroundColor = new Color(31, 31, 31);
+        /* ---------- Visual Elements ---------- */
 
-        BTest.setBounds(Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round(btnHeight*0.2f), Math.round(btnWidth), Math.round(btnHeight));
-        BTest.setFont(new Font("Arial", Font.BOLD, 14));
-        BTest.setForeground(new Color(203, 203, 203));
-        BTest.setBackground(new Color(31, 31, 31));
+        JButton BTest = Button("Test Title", Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round(btnHeight*0.2f), Math.round(btnWidth), Math.round(btnHeight));
+        JButton BTest2 = Button("Test 2", Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round((roundScrHeight - btnHeight*1.7f)), Math.round(btnWidth), Math.round(btnHeight));
 
-
-        JButton BTest2 = new JButton("Test 2");
-        BTest2.setBounds(Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round((roundScrHeight - btnHeight*1.7f)), Math.round(btnWidth), Math.round(btnHeight));
-        BTest2.setFont(new Font("Arial", Font.BOLD, 18));
-        BTest2.setForeground(new Color(203, 203, 203));
-        BTest2.setBackground(new Color(31, 31, 31));
+        userText = TextInput("Type your name here!", Math.round(btnWidth), Math.round(btnHeight * 2f), 240, 150);
 
         add(BTest);
         add(BTest2);
 
+        add(userText);
+
         BTest.addActionListener(this::secondTestMethod);
         BTest2.addActionListener(this::testMethod);
 
-        userText = new JTextField("Your name here");
-        userText.setBounds(Math.round(btnWidth), Math.round(btnHeight * 2f), 240, 150);
+    }
+
+    private JButton Button(String buttonName, int x, int y, int width, int height)
+    {
+        JButton Button = new JButton(buttonName);
+
+        Button.setBounds(x, y, width, height);
+        Button.setFont(new Font("Arial", Font.BOLD, 14));
+        Button.setForeground(new Color(203, 203, 203));
+        Button.setBackground(new Color(31, 31, 31));
+
+        return Button;
+    }
+
+    private JTextField TextInput(String placeholderText, int x, int y, int width, int height)
+    {
+        userText = new JTextField(placeholderText);
+        userText.setBounds(x, y, width, height);
         userText.setFont(font);
         userText.requestFocusInWindow();
 
-        add(userText);
+        return userText;
     }
-
 
     private void testMethod(ActionEvent actionEvent)
     {
