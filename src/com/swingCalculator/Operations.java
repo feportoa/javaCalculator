@@ -1,11 +1,9 @@
-import java.util.Scanner;
-import java.util.Locale;
-import java.io.IOException;
-import java.awt.*;
-import javax.swing.*;
+package com.swingCalculator;
 
-public class Main {
-    public static void main(String[] args)
+import java.util.Scanner;
+
+public class Operations {
+    public Operations()
     {
         Scanner scan = new Scanner(System.in);
         boolean isRunning = true;
