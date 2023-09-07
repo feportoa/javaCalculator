@@ -3,15 +3,14 @@ package com.swingCalculator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.RoundingMode;
 
 public class Screen extends JFrame
 {
-    long scrWidth = 480l;
-    long scrHeight = 600l;
-    long btnWidth = 100l;
-    long btnHeight = 75l;
+    JTextField userText;
+    long scrWidth = 480L;
+    long scrHeight = 600L;
+    long btnWidth = 100L;
+    long btnHeight = 75L;
     public Screen()
     {
         setTitle("JaCa");
@@ -27,7 +26,7 @@ public class Screen extends JFrame
         setLocationRelativeTo(null);
         setLayout(null);
 
-        JButton BTest = new JButton("Teste");
+        JButton BTest = new JButton("Test");
         Font font = new Font("Arial", Font.BOLD, 18);
         Color foregroundColor = new Color(203, 203, 203);
         Color backgroundColor = new Color(31, 31, 31);
@@ -38,7 +37,7 @@ public class Screen extends JFrame
         BTest.setBackground(new Color(31, 31, 31));
 
 
-        JButton BTest2 = new JButton("Teste 2");
+        JButton BTest2 = new JButton("Test 2");
         BTest2.setBounds(Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round((roundScrHeight - btnHeight*1.7f)), Math.round(btnWidth), Math.round(btnHeight));
         BTest2.setFont(new Font("Arial", Font.BOLD, 18));
         BTest2.setForeground(new Color(203, 203, 203));
@@ -49,6 +48,13 @@ public class Screen extends JFrame
 
         BTest.addActionListener(this::secondTestMethod);
         BTest2.addActionListener(this::testMethod);
+
+        userText = new JTextField("Your name here");
+        userText.setBounds(Math.round(btnWidth), Math.round(btnHeight * 2f), 240, 150);
+        userText.setFont(font);
+        userText.requestFocusInWindow();
+
+        add(userText);
     }
 
 
@@ -60,8 +66,8 @@ public class Screen extends JFrame
     private void secondTestMethod(ActionEvent actionEvent)
     {
         String userInput = JOptionPane.showInputDialog("Type something :)!", "Somthing");
-        if(userInput.equals("Something :)!")){
-            JOptionPane.showMessageDialog(null, "Interesting choice!", "Wise choice path...", JOptionPane.INFORMATION_MESSAGE);
+        if(userInput != null && userInput.equals("something :)!")){
+            JOptionPane.showMessageDialog(null, ("Interesting choice, " + userText.getText() + "!"), "Wise choice path...", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
