@@ -20,7 +20,6 @@ public class Screen extends JFrame
     {
         /* ---------- Screen Settings ---------- */
         setTitle("JaCa");
-        setVisible(true);
 
         int roundScrWidth, roundScrHeight;
         roundScrWidth = Math.round(scrWidth);
@@ -37,16 +36,21 @@ public class Screen extends JFrame
         JButton BTest = Button("Test Title", Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round(btnHeight*0.2f), Math.round(btnWidth), Math.round(btnHeight));
         JButton BTest2 = Button("Test 2", Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round((roundScrHeight - btnHeight*1.7f)), Math.round(btnWidth), Math.round(btnHeight));
 
+        BTest.addActionListener(this::secondTestMethod);
+        BTest2.addActionListener(this::testMethod);
+
         userText = TextInput("Type your name here!", Math.round(btnWidth), Math.round(btnHeight * 2f), 240, 150);
+
+        JLabel result = StaticText("Test Label", 20, 10, 65, 42);
 
         add(BTest);
         add(BTest2);
 
         add(userText);
 
-        BTest.addActionListener(this::secondTestMethod);
-        BTest2.addActionListener(this::testMethod);
+        add(result);
 
+        setVisible(true);
     }
 
     private JButton Button(String buttonName, int x, int y, int width, int height)
@@ -66,9 +70,17 @@ public class Screen extends JFrame
         userText = new JTextField(placeholderText);
         userText.setBounds(x, y, width, height);
         userText.setFont(font);
-        userText.requestFocusInWindow();
 
         return userText;
+    }
+
+    private JLabel StaticText(String text, int x, int y, int width, int height)
+    {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, width, height);
+        label.setFont(font);
+
+        return label;
     }
 
     private void testMethod(ActionEvent actionEvent)
