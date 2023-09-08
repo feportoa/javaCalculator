@@ -39,7 +39,7 @@ public class Screen extends JFrame
         BTest.addActionListener(this::secondTestMethod);
         BTest2.addActionListener(this::testMethod);
 
-        userText = TextInput("Type your name here!", Math.round(btnWidth), Math.round(btnHeight * 2f), 240, 150);
+        userText = TextInput("Type your name here!", Math.round(scrWidth / 2f - 240 / 2f), Math.round(btnHeight * 2f), 240, 45);
 
         JLabel result = StaticText("Test Label", 20, 10, 65, 42);
 
