@@ -41,7 +41,7 @@ public class Screen extends JFrame
 
         userText = TextInput("Type your name here!", Math.round(scrWidth / 2f - 240 / 2f), Math.round(btnHeight * 2f), 240, 45);
 
-        JLabel result = StaticText("Test Label", 20, 10, 65, 42);
+        JLabel result = StaticText("Test Label", 20, 10, 75, 42);
 
         add(BTest);
         add(BTest2);
@@ -78,7 +78,7 @@ public class Screen extends JFrame
     {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, width, height);
-        label.setFont(font);
+        label.setFont(new Font("Arial", Font.ITALIC, 12));
 
         return label;
     }
