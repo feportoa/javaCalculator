@@ -19,6 +19,11 @@ public class Screen extends JFrame
     public Screen()
     {
         /* ---------- Screen Settings ---------- */
+        GridBagLayout grid = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.1;
+
         setTitle("JaCa");
 
         int roundScrWidth, roundScrHeight;
@@ -29,71 +34,125 @@ public class Screen extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
-        setLayout(null);
+        setLayout(grid);
 
         /* ---------- Visual Elements ---------- */
+        JLabel operationLabel = new JLabel("Test");
+        operationLabel.setFont(new Font("Arial", Font.BOLD, 32));
 
-        JButton BTest = Button("Test Title", Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round(btnHeight*0.2f), Math.round(btnWidth), Math.round(btnHeight));
-        JButton BTest2 = Button("Test 2", Math.round((scrWidth/2f)-(btnWidth/2f)), Math.round((roundScrHeight - btnHeight*1.7f)), Math.round(btnWidth), Math.round(btnHeight));
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
 
-        BTest.addActionListener(this::secondTestMethod);
-        BTest2.addActionListener(this::testMethod);
+        gbc.gridx = 0;
+        gbc.gridwidth = 3;
 
-        userText = TextInput("Type your name here!", Math.round(scrWidth / 2f - 240 / 2f), Math.round(btnHeight * 2f), 240, 45);
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
 
-        JLabel result = StaticText("Test Label", 20, 10, 75, 42);
+        gbc.fill = GridBagConstraints.BOTH;
+        add(operationLabel, gbc);
 
-        add(BTest);
-        add(BTest2);
+        JButton[] btnArray = new JButton[15];
 
-        add(userText);
+        JButton del = stylizedButtons("del", true);
+        JButton multiply = stylizedButtons("*", true);
+        JButton divide = stylizedButtons("/", true);
+        JButton sub = stylizedButtons("-", true);
+        JButton decimalSeparator = stylizedButtons(".", true);
 
-        add(result);
+        JButton add = stylizedButtons("+", false);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+
+        gbc.gridy = 2;
+        gbc.gridheight = 2;
+
+        gbc.fill = GridBagConstraints.BOTH;
+        add(add, gbc);
+
+        JButton res = stylizedButtons("=", false);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+
+        gbc.gridy = 4;
+        gbc.gridheight = 3;
+
+        gbc.fill = GridBagConstraints.BOTH;
+        add(res, gbc);
+
+        JButton btn1 = stylizedButtons("1", true);
+        JButton btn2 = stylizedButtons("2", true);
+        JButton btn3 = stylizedButtons("3", true);
+        JButton btn4 = stylizedButtons("4", true);
+        JButton btn5 = stylizedButtons("5", true);
+        JButton btn6 = stylizedButtons("6", true);
+        JButton btn7 = stylizedButtons("7", true);
+        JButton btn8 = stylizedButtons("8", true);
+        JButton btn9 = stylizedButtons("9", true);
+        JButton btn0 = stylizedButtons("0", true);
+
+        btnArray[0] = divide;
+        btnArray[1] = multiply;
+        btnArray[2] = sub;
+        btnArray[3] = btn1;
+        btnArray[4] = btn2;
+        btnArray[5] = btn3;
+        btnArray[6] = btn4;
+        btnArray[7] = btn5;
+        btnArray[8] = btn6;
+        btnArray[9] = btn7;
+        btnArray[10] = btn8;
+        btnArray[11] = btn9;
+        btnArray[12] = del;
+        btnArray[13] = btn0;
+        btnArray[14] = decimalSeparator;
+
+        gridConfig(btnArray, gbc, 0, 2, 2, 6);
 
         setVisible(true);
     }
 
-    private JButton Button(String buttonName, int x, int y, int width, int height)
+    private JButton stylizedButtons(String label, boolean isAdded)
     {
-        JButton Button = new JButton(buttonName);
+        JButton btn = new JButton(label);
+        btn.setPreferredSize(new Dimension(50, 50));
+        btn.setFont(new Font("Arial", Font.PLAIN, 18));
+        btn.setForeground(new Color(0x3F3F3F));
+        btn.setBackground(new Color(0xDFDFDF));
+        btn.setBorder(BorderFactory.createLineBorder(new Color(0xAFAFAF)));
+        btn.setFocusPainted(false);
+        btn.setHorizontalTextPosition(JButton.CENTER);
+        btn.setVerticalTextPosition(JButton.CENTER);
 
-        Button.setBounds(x, y, width, height);
-        Button.setFont(new Font("Arial", Font.BOLD, 14));
-        Button.setForeground(new Color(203, 203, 203));
-        Button.setBackground(new Color(31, 31, 31));
+        if(isAdded) {
+            GridBagConstraints gbcVar = new GridBagConstraints();
+            gbcVar.weightx = 0.1;
+            gbcVar.weighty = 0.1;
+            add(btn,gbcVar);
+        }
 
-        return Button;
+        return btn;
     }
 
-    private JTextField TextInput(String placeholderText, int x, int y, int width, int height)
+    private void gridConfig(JButton[] buttonArray, GridBagConstraints gbcVar, int startGridx, int endGridx, int startGridy, int endGridy)
     {
-        userText = new JTextField(placeholderText);
-        userText.setBounds(x, y, width, height);
-        userText.setFont(font);
+        int buttonArrayCount = 0;
 
-        return userText;
-    }
+        for(int i = startGridy; i <= endGridy; i++){
+            for(int j = startGridx; j <= endGridx; j++){
+                if(buttonArrayCount < buttonArray.length) {
+                    gbcVar.gridx = j;
+                    gbcVar.gridwidth = 1;
 
-    private JLabel StaticText(String text, int x, int y, int width, int height)
-    {
-        JLabel label = new JLabel(text);
-        label.setBounds(x, y, width, height);
-        label.setFont(new Font("Arial", Font.ITALIC, 12));
+                    gbcVar.gridy = i;
+                    gbcVar.gridheight = 1;
 
-        return label;
-    }
+                    gbcVar.fill = GridBagConstraints.BOTH;
 
-    private void testMethod(ActionEvent actionEvent)
-    {
-        JOptionPane.showMessageDialog(null, "BTest2 clicked - WORKING", "Test message confirmation", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void secondTestMethod(ActionEvent actionEvent)
-    {
-        String userInput = JOptionPane.showInputDialog("Type something :)!", "Somthing");
-        if(userInput != null && userInput.equals("something :)!")){
-            JOptionPane.showMessageDialog(null, ("Interesting choice, " + userText.getText() + "!"), "Wise choice path...", JOptionPane.INFORMATION_MESSAGE);
+                    add(buttonArray[buttonArrayCount], gbcVar);
+                    buttonArrayCount++;
+                }
+            }
         }
     }
-
 }
