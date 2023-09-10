@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 public class Screen extends JFrame
 {
+    JLabel operationLabel;
     JTextField userText;
     long scrWidth = 480L;
     long scrHeight = 600L;
@@ -36,15 +37,17 @@ public class Screen extends JFrame
         setLocationRelativeTo(null);
         setLayout(grid);
 
+
+
         /* ---------- Visual Elements ---------- */
-        JLabel operationLabel = new JLabel("Test");
+        operationLabel = new JLabel(); // Holds 21 characters (min)
         operationLabel.setFont(new Font("Arial", Font.BOLD, 32));
 
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.5;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
 
         gbc.gridx = 0;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 4;
 
         gbc.gridy = 0;
         gbc.gridheight = 2;
@@ -109,6 +112,8 @@ public class Screen extends JFrame
 
         gridConfig(btnArray, gbc, 0, 2, 2, 6);
 
+        /* ------------ Math config ------------ */
+
         setVisible(true);
     }
 
@@ -124,6 +129,8 @@ public class Screen extends JFrame
         btn.setHorizontalTextPosition(JButton.CENTER);
         btn.setVerticalTextPosition(JButton.CENTER);
 
+        btn.addActionListener(e -> composeOperation((JButton) e.getSource()));
+
         if(isAdded) {
             GridBagConstraints gbcVar = new GridBagConstraints();
             gbcVar.weightx = 0.1;
@@ -132,6 +139,18 @@ public class Screen extends JFrame
         }
 
         return btn;
+    }
+
+    private void composeOperation(JButton event)
+    {
+        String jLabelString = operationLabel.getText();
+        if(event.getText().equals("del")){
+            operationLabel.setText(jLabelString.substring(0, jLabelString.length() -1));
+        } else if(event.getText().equals("=")) {
+
+        } else {
+            operationLabel.setText(operationLabel.getText() + event.getText());
+        }
     }
 
     private void gridConfig(JButton[] buttonArray, GridBagConstraints gbcVar, int startGridx, int endGridx, int startGridy, int endGridy)
