@@ -1,18 +1,20 @@
 package com.swingCalculator;
 
-import javax.script.ScriptException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Vector;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class Screen extends JFrame
 {
-    Vector<Double> num = new Vector<>();
+    Deque<Double> num = new ArrayDeque<>();
+    Deque<String> constOperators = new ArrayDeque<String>();
+    Deque<String> operators = new ArrayDeque<String>();
+    String numString;
+
     JLabel operationLabel;
     JTextField userText;
+
     long scrWidth = 480L;
     long scrHeight = 600L;
     long btnWidth = 100L;
@@ -24,6 +26,11 @@ public class Screen extends JFrame
 
     public Screen()
     {
+        constOperators.add("+");
+        constOperators.add("-");
+        constOperators.add("*");
+        constOperators.add("/");
+
         /* ---------- Screen Settings ---------- */
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -132,14 +139,7 @@ public class Screen extends JFrame
         btn.setHorizontalTextPosition(JButton.CENTER);
         btn.setVerticalTextPosition(JButton.CENTER);
 
-        btn.addActionListener(e -> {
-            try {
-                composeOperation((JButton) e.getSource());
-            } catch (Exception ex) {
-                ex.printStackTrace(); // Isso imprimirá informações sobre a exceção no console.
-            }
-        });
-
+        btn.addActionListener(e -> composeOperation((JButton) e.getSource()));
 
         if(isAdded) {
             GridBagConstraints gbcVar = new GridBagConstraints();
@@ -151,20 +151,75 @@ public class Screen extends JFrame
         return btn;
     }
 
-    private void composeOperation(JButton event) throws ScriptException {
+    private void composeOperation(JButton event){
         String jLabelString = operationLabel.getText();
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        System.out.println(mgr);
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        System.out.println(engine);
-
-        if(event.getText().equals("del")){
-            operationLabel.setText(jLabelString.substring(0, jLabelString.length() -1));
+        if(event.getText().equals("del")) {
+            operationLabel.setText(jLabelString.substring(0, jLabelString.length() - 1));
         } else if(event.getText().equals("=")){
-            operationLabel.setText(engine.eval(jLabelString).toString());
+            del(operationLabel);
+            num.add(Double.parseDouble(jLabelString));
+            calculate();
+            operators.clear();
+            num.clear();
+        } else if(constOperators.contains(event.getText())) {
+            System.out.println("Deleted " + jLabelString + " and added \"" + event.getText() + "\" operator");
+            del(operationLabel);
+            if(!jLabelString.isEmpty()) {
+                num.add(Double.parseDouble(jLabelString));
+            }
+            operators.add(event.getText());
+            System.out.println(num);
+            System.out.println(operators);
         } else {
-            operationLabel.setText(jLabelString + event.getText());
+            concatNumber(event.getText());
         }
+    }
+
+    private void del(JLabel lbl)
+    {
+        lbl.setText(null);
+    }
+
+    private void concatNumber(String digit)
+    {
+        operationLabel.setText(operationLabel.getText() == null ? digit : operationLabel.getText() + digit);
+        numString += digit;
+    }
+
+    private void calculate()
+    {
+        double res = 0;
+        for(int i = 0; i < operators.size(); i++){
+            System.out.println(num);
+            double n1 = num.getFirst();
+            num.pop();
+            System.out.println(num);
+            double n2 = num.getFirst();
+            num.pop();
+
+            switch(operators.getFirst()){
+                case "+":
+                    res = n1 + n2;
+                    num.addFirst(res);
+                    break;
+
+                case "-":
+                    res = n1 - n2;
+                    num.addFirst(res);
+                    break;
+
+                case "*":
+                    res = n1 * n2;
+                    num.addFirst(res);
+                    break;
+
+                case "/":
+                    res = n1 / n2;
+                    num.addFirst(res);
+                    break;
+            }
+        }
+        operationLabel.setText(Double.toString(res));
     }
 
     private void gridConfig(JButton[] buttonArray, GridBagConstraints gbcVar, int startGridx, int endGridx, int startGridy, int endGridy)
