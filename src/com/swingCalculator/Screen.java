@@ -162,14 +162,11 @@ public class Screen extends JFrame
             operators.clear();
             num.clear();
         } else if(constOperators.contains(event.getText())) {
-            System.out.println("Deleted " + jLabelString + " and added \"" + event.getText() + "\" operator");
             del(operationLabel);
             if(!jLabelString.isEmpty()) {
                 num.add(Double.parseDouble(jLabelString));
             }
             operators.add(event.getText());
-            System.out.println(num);
-            System.out.println(operators);
         } else {
             concatNumber(event.getText());
         }
@@ -190,16 +187,16 @@ public class Screen extends JFrame
     {
         double res = 0;
         for(int i = 0; i < operators.size(); i++){
-            System.out.println(num);
             double n1 = num.getFirst();
             num.pop();
-            System.out.println(num);
             double n2 = num.getFirst();
             num.pop();
+            System.out.println(operators);
 
             switch(operators.getFirst()){
                 case "+":
                     res = n1 + n2;
+                    System.out.println(n1 + " + " + n2 + " = " + res);
                     num.addFirst(res);
                     break;
 
@@ -215,9 +212,12 @@ public class Screen extends JFrame
 
                 case "/":
                     res = n1 / n2;
+                    System.out.println(n1 + " / " + n2 + " = " + res);
                     num.addFirst(res);
                     break;
             }
+            operators.pop();
+            --i;
         }
         operationLabel.setText(Double.toString(res));
     }
