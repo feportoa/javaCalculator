@@ -1,11 +1,16 @@
 package com.swingCalculator;
 
+import javax.script.ScriptException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Vector;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 public class Screen extends JFrame
 {
+    Vector<Double> num = new Vector<>();
     JLabel operationLabel;
     JTextField userText;
     long scrWidth = 480L;
@@ -36,8 +41,6 @@ public class Screen extends JFrame
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(grid);
-
-
 
         /* ---------- Visual Elements ---------- */
         operationLabel = new JLabel(); // Holds 21 characters (min)
@@ -129,7 +132,14 @@ public class Screen extends JFrame
         btn.setHorizontalTextPosition(JButton.CENTER);
         btn.setVerticalTextPosition(JButton.CENTER);
 
-        btn.addActionListener(e -> composeOperation((JButton) e.getSource()));
+        btn.addActionListener(e -> {
+            try {
+                composeOperation((JButton) e.getSource());
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Isso imprimirá informações sobre a exceção no console.
+            }
+        });
+
 
         if(isAdded) {
             GridBagConstraints gbcVar = new GridBagConstraints();
@@ -141,15 +151,19 @@ public class Screen extends JFrame
         return btn;
     }
 
-    private void composeOperation(JButton event)
-    {
+    private void composeOperation(JButton event) throws ScriptException {
         String jLabelString = operationLabel.getText();
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        System.out.println(mgr);
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+        System.out.println(engine);
+
         if(event.getText().equals("del")){
             operationLabel.setText(jLabelString.substring(0, jLabelString.length() -1));
-        } else if(event.getText().equals("=")) {
-
+        } else if(event.getText().equals("=")){
+            operationLabel.setText(engine.eval(jLabelString).toString());
         } else {
-            operationLabel.setText(operationLabel.getText() + event.getText());
+            operationLabel.setText(jLabelString + event.getText());
         }
     }
 
