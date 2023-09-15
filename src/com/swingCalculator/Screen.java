@@ -8,21 +8,14 @@ import java.util.ArrayDeque;
 public class Screen extends JFrame
 {
     Deque<Double> num = new ArrayDeque<>();
-    Deque<String> constOperators = new ArrayDeque<String>();
-    Deque<String> operators = new ArrayDeque<String>();
+    Deque<String> constOperators = new ArrayDeque<>();
+    Deque<String> operators = new ArrayDeque<>();
     String numString;
 
     JLabel operationLabel;
-    JTextField userText;
 
     long scrWidth = 480L;
     long scrHeight = 600L;
-    long btnWidth = 100L;
-    long btnHeight = 75L;
-
-    Font font = new Font("Arial", Font.BOLD, 18);
-    Color foregroundColor = new Color(203, 203, 203);
-    Color backgroundColor = new Color(31, 31, 31);
 
     public Screen()
     {
@@ -191,12 +184,10 @@ public class Screen extends JFrame
             num.pop();
             double n2 = num.getFirst();
             num.pop();
-            System.out.println(operators);
 
             switch(operators.getFirst()){
                 case "+":
                     res = n1 + n2;
-                    System.out.println(n1 + " + " + n2 + " = " + res);
                     num.addFirst(res);
                     break;
 
@@ -212,7 +203,6 @@ public class Screen extends JFrame
 
                 case "/":
                     res = n1 / n2;
-                    System.out.println(n1 + " / " + n2 + " = " + res);
                     num.addFirst(res);
                     break;
             }
